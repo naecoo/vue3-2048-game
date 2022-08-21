@@ -1,0 +1,3 @@
+2048 game implemention by Vue 3.x.
+
+doing....
