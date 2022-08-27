@@ -1,4 +1,4 @@
 
 <template>
-  <h1> 2048 </h1>
+  <h1> The 2048 Game </h1>
 </template>
