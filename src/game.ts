@@ -79,15 +79,15 @@ export const useGrid = (size: number) => {
           let prevValue = -1;
           let prevIndex = -1;
           for (let row = 0; row < size; row++) {
-            if (newGridData[row][col] !== prevValue) {
-              prevValue = newGridData[row][col];
-              prevIndex = row;
-            } else {
+            if (newGridData[row][col] === prevValue) {
               newGridData[prevIndex][col] += newGridData[row][col];
               newGridData[row][col] = 0;
               scoreIncrement += newGridData[prevIndex][col]
               prevValue = -1;
               prevIndex = -1;
+            } else if (newGridData[row][col] !== 0) {
+              prevValue = newGridData[row][col];
+              prevIndex = row;
             }
           }
         }
@@ -112,15 +112,15 @@ export const useGrid = (size: number) => {
           let prevValue = -1;
           let prevIndex = -1;
           for (let row = size - 1; row >= 0; row--) {
-            if (newGridData[row][col] !== prevValue) {
-              prevValue = newGridData[row][col];
-              prevIndex = row;
-            } else {
+            if (newGridData[row][col] === prevValue) {
               newGridData[prevIndex][col] += newGridData[row][col];
               newGridData[row][col] = 0;
               scoreIncrement += newGridData[prevIndex][col]
               prevValue = -1;
               prevIndex = -1;
+            } else if (newGridData[row][col] !== 0) {
+              prevValue = newGridData[row][col];
+              prevIndex = row;
             }
           }
         }
@@ -145,15 +145,15 @@ export const useGrid = (size: number) => {
           let prevValue = -1;
           let prevIndex = -1;
           for (let col = 0; col < size; col++) {
-            if (newGridData[row][col] !== prevValue) {
-              prevValue = newGridData[row][col];
-              prevIndex = row;
-            } else {
+            if (newGridData[row][col] === prevValue) {
               newGridData[row][prevIndex] += newGridData[row][col];
               newGridData[row][col] = 0;
               scoreIncrement += newGridData[row][prevIndex]
               prevValue = -1;
               prevIndex = -1;
+            } else if (newGridData[row][col] !== 0) {
+              prevValue = newGridData[row][col];
+              prevIndex = col;
             }
           }
         }
@@ -173,21 +173,20 @@ export const useGrid = (size: number) => {
         break;
 
       case Direction.RIGHT:
-        console.log('right');
         // merge
         for (let row = 0; row < size; row++) {
           let prevValue = -1;
           let prevIndex = -1;
           for (let col = size - 1; col >= 0; col--) {
-            if (newGridData[row][col] !== prevValue) {
-              prevValue = newGridData[row][col];
-              prevIndex = row;
-            } else {
+            if (newGridData[row][col] === prevValue) {
               newGridData[row][prevIndex] += newGridData[row][col];
               newGridData[row][col] = 0;
               scoreIncrement += newGridData[row][prevIndex]
               prevValue = -1;
               prevIndex = -1;
+            } else if (newGridData[row][col] !== 0) {
+              prevValue = newGridData[row][col];
+              prevIndex = col;
             }
           }
         }
