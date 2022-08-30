@@ -1,0 +1,185 @@
+body {
+  background: #faf8ef;
+  font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+  overflow-y: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #776e65;
+}
+
+.box {
+  background: rgba(238, 228, 218, 0.25);
+  width: 100%;
+  height: 100%;
+}
+
+.tile {
+  background-color: #eee4da;
+  color: #5e554c;
+  position: absolute;
+  justify-items: center;
+  align-items: center;
+  margin: 10px;
+  top: 0;
+  left: 0;
+  -webkit-transition: 0.1s ease-in-out;
+  transition: 0.1s ease-in-out;
+  font-weight: 700;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+  border-radius: 6px;
+}
+
+.tile-2 {
+  background: #eee4da;
+}
+.tile-2,
+.tile-4 {
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0);
+}
+.tile-4 {
+  background: #eee2ce;
+}
+.tile-8 {
+  color: #f9f6f2;
+  background: #f3b27e;
+}
+.tile-16 {
+  color: #f9f6f2;
+  background: #f6976b;
+}
+.tile-32 {
+  color: #f9f6f2;
+  background: #f77e68;
+}
+.tile-64 {
+  color: #f9f6f2;
+  background: #f76147;
+}
+.tile-128 {
+  color: #f9f6f2;
+  background: #eed590;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.151515),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.0909091);
+}
+.tile-256 {
+  color: #f9f6f2;
+  background: #eed384;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.20202),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.121212);
+}
+.tile-512 {
+  color: #f9f6f2;
+  background: #edd178;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.252525),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.151515);
+}
+.tile-1024 {
+  color: #f9f6f2;
+  background: #edce6b;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.30303),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.181818);
+}
+.tile-2048 {
+  color: #f9f6f2;
+  background: #edcc5f;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.353535),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.212121);
+}
+.tile-4096 {
+  color: #f9f6f2;
+  background: #edc953;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.40404),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.242424);
+}
+.tile-8192 {
+  color: #f9f6f2;
+  background: #edc747;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.454545),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.272727);
+}
+.tile-16384 {
+  color: #f9f6f2;
+  background: #edc43a;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.505051),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.30303);
+}
+.tile-32768 {
+  color: #f9f6f2;
+  background: #edc22e;
+  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.555556),
+    inset 0 0 0 1px hsla(0, 0%, 100%, 0.333333);
+}
+
+@-webkit-keyframes pop {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes pop {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes appear {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes appear {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+.tile-new {
+  -webkit-animation: appear 0.3s ease 0.1s;
+  animation: appear 0.3s ease 0.1s;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+.tile-merged {
+  z-index: 290;
+  -webkit-animation: pop 0.2s ease-in 0.1s;
+  animation: pop 0.2s ease-in 0.1s;
+  -webkit-animation-fill-mode: backwards;
+  animation-fill-mode: backwards;
+}
+.tile-delete {
+  opacity: 0.5;
+}
