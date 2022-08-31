@@ -84,6 +84,21 @@ onUnmounted(() => {
 </style>
 
 <style lang="less">
+// todo: 生成2-32768的样式
+@base-color: #c8bbaf;
+@base-bg-color: #eee4da;
+
+each(range(1, 15), {
+  @size: pow(2, @index);
+
+  .col-@{size} {
+    height: (@value * 1px);
+  }
+});
+
+
+
+
 .cell {
   background: #c8bbaf;
   color: #5e554c;

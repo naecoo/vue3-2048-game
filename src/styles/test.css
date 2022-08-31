@@ -115,69 +115,36 @@ body {
     inset 0 0 0 1px hsla(0, 0%, 100%, 0.333333);
 }
 
-@-webkit-keyframes pop {
-  0% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-  50% {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-  to {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-}
 @keyframes pop {
   0% {
-    -webkit-transform: scale(1);
     transform: scale(1);
   }
   50% {
-    -webkit-transform: scale(1.2);
     transform: scale(1.2);
   }
   to {
-    -webkit-transform: scale(1);
     transform: scale(1);
   }
 }
-@-webkit-keyframes appear {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-}
+
 @keyframes appear {
   0% {
     opacity: 0;
-    -webkit-transform: scale(0);
     transform: scale(0);
   }
   to {
     opacity: 1;
-    -webkit-transform: scale(1);
     transform: scale(1);
   }
 }
+
 .tile-new {
-  -webkit-animation: appear 0.3s ease 0.1s;
   animation: appear 0.3s ease 0.1s;
-  -webkit-animation-fill-mode: backwards;
   animation-fill-mode: backwards;
 }
 .tile-merged {
   z-index: 290;
-  -webkit-animation: pop 0.2s ease-in 0.1s;
   animation: pop 0.2s ease-in 0.1s;
-  -webkit-animation-fill-mode: backwards;
   animation-fill-mode: backwards;
 }
 .tile-delete {
