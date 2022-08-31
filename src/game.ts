@@ -1,24 +1,40 @@
 import { computed, ref } from 'vue';
 
-
 export enum Direction {
   UP = 1,
   DOWN,
   LEFT,
-  RIGHT
+  RIGHT,
+}
+
+export type Cell = {
+  value: number;
+  merge?: boolean;
+  new?: boolean;
 };
-export type GridData = number[][];
+
+export type GridData = Cell[][];
+
 type GridHistoryItem = {
   score: number;
   data: GridData;
 };
 
-const INIT_VALUE = 2;
+const createGridData = (size: number): GridData => {
+  const res: GridData = [];
+  for (let i = 0; i < size; i++) {
+    const rows: Cell[] = [];
+    for (let i = 0; i < size; i++) {
+      rows.push({ value: 0 });
+    }
+    res.push(rows);
+  }
 
-const createGridData = (size: number): GridData => new Array(size).fill(null).map(() => new Array(size).fill(0));
+  return res;
+};
 
 const cloneDeep = (data: GridData): GridData => {
-  return data.map(row => [...row]);
+  return data.map((row) => row.map((cell) => ({ value: cell.value })));
 };
 
 export const useGrid = (size: number) => {
@@ -26,7 +42,9 @@ export const useGrid = (size: number) => {
   const gridData = ref(createGridData(size));
   const history: GridHistoryItem[] = [];
 
-  const hasEmpty = computed(() => gridData.value.some(row => row.some(cell => cell === 0)));
+  const hasEmpty = computed(() =>
+    gridData.value.some((row) => row.some((cell) => cell.value === 0))
+  );
   const isEnd = computed(() => {
     if (hasEmpty.value) {
       return false;
@@ -36,7 +54,7 @@ export const useGrid = (size: number) => {
     // vertical
     for (let col = 0; col < size; col++) {
       for (let row = 1; row < size; row++) {
-        if (grid[row][col] === grid[row - 1][col]) {
+        if (grid[row][col].value === grid[row - 1][col].value) {
           return false;
         }
       }
@@ -44,7 +62,7 @@ export const useGrid = (size: number) => {
     // horizontal
     for (let row = 0; row < size; row++) {
       for (let col = 1; col < size; col++) {
-        if (grid[row][col] === grid[row][col - 1]) {
+        if (grid[row][col].value === grid[row][col - 1].value) {
           return false;
         }
       }
@@ -59,157 +77,110 @@ export const useGrid = (size: number) => {
       gridData.value = historyItem.data;
       score.value = historyItem.score;
     }
-  }
+  };
 
   const move = (dir: Direction) => {
     history.push({
       score: score.value,
-      data: gridData.value
+      data: gridData.value,
     });
 
-    const newGridData = cloneDeep(gridData.value);
+    const grid = cloneDeep(gridData.value);
     let scoreIncrement = 0;
 
-    // todo: optimize，merge & comporess operations in one for loop
-    // fixme:
     switch (dir) {
       case Direction.UP:
-        // merge
         for (let col = 0; col < size; col++) {
-          let prevValue = -1;
-          let prevIndex = -1;
+          let value = -1;
+          let valueIndex = -1;
+          let notNullIndex = -1;
           for (let row = 0; row < size; row++) {
-            if (newGridData[row][col] === prevValue) {
-              newGridData[prevIndex][col] += newGridData[row][col];
-              newGridData[row][col] = 0;
-              scoreIncrement += newGridData[prevIndex][col]
-              prevValue = -1;
-              prevIndex = -1;
-            } else if (newGridData[row][col] !== 0) {
-              prevValue = newGridData[row][col];
-              prevIndex = row;
-            }
-          }
-        }
-        // compress
-        for (let col = 0; col < size; col++) {
-          let prevIndex = 0;
-          for (let row = 0; row < size; row++) {
-            if (newGridData[row][col] !== 0) {
-              if (row !== prevIndex) {
-                newGridData[prevIndex][col] = newGridData[row][col];
-                newGridData[row][col] = 0;
-              }
-              prevIndex++;
+            if (grid[row][col].value === value) {
+              grid[valueIndex][col].merge = true;
+              grid[valueIndex][col].value += value;
+              grid[row][col].value = 0;
+              value = -1;
+              scoreIncrement += grid[valueIndex][col].value;
+            } else if (grid[row][col].value !== 0) {
+              value = grid[row][col].value;
+              grid[row][col].value = 0;
+              valueIndex = ++notNullIndex;
+              grid[valueIndex][col].value = value;
             }
           }
         }
         break;
 
       case Direction.DOWN:
-        // merge
         for (let col = 0; col < size; col++) {
-          let prevValue = -1;
-          let prevIndex = -1;
+          let value = -1;
+          let valueIndex = -1;
+          let notNullIndex = size;
           for (let row = size - 1; row >= 0; row--) {
-            if (newGridData[row][col] === prevValue) {
-              newGridData[prevIndex][col] += newGridData[row][col];
-              newGridData[row][col] = 0;
-              scoreIncrement += newGridData[prevIndex][col]
-              prevValue = -1;
-              prevIndex = -1;
-            } else if (newGridData[row][col] !== 0) {
-              prevValue = newGridData[row][col];
-              prevIndex = row;
-            }
-          }
-        }
-        // compress
-        for (let col = 0; col < size; col++) {
-          let prevIndex = size - 1;
-          for (let row = size - 1; row >= 0; row--) {
-            if (newGridData[row][col] !== 0) {
-              if (row !== prevIndex) {
-                newGridData[prevIndex][col] = newGridData[row][col];
-                newGridData[row][col] = 0;
-              }
-              prevIndex--;
+            if (grid[row][col].value === value) {
+              grid[valueIndex][col].merge = true;
+              grid[valueIndex][col].value += value;
+              grid[row][col].value = 0;
+              value = -1;
+              scoreIncrement += grid[valueIndex][col].value;
+            } else if (grid[row][col].value !== 0) {
+              value = grid[row][col].value;
+              grid[row][col].value = 0;
+              valueIndex = --notNullIndex;
+              grid[valueIndex][col].value = value;
             }
           }
         }
         break;
 
       case Direction.LEFT:
-        // merge
         for (let row = 0; row < size; row++) {
-          let prevValue = -1;
-          let prevIndex = -1;
+          let value = -1;
+          let valueIndex = -1;
+          let notNullIndex = -1;
           for (let col = 0; col < size; col++) {
-            if (newGridData[row][col] === prevValue) {
-              newGridData[row][prevIndex] += newGridData[row][col];
-              newGridData[row][col] = 0;
-              scoreIncrement += newGridData[row][prevIndex]
-              prevValue = -1;
-              prevIndex = -1;
-            } else if (newGridData[row][col] !== 0) {
-              prevValue = newGridData[row][col];
-              prevIndex = col;
-            }
-          }
-        }
-        // compress
-        for (let row = 0; row < size; row++) {
-          let prevIndex = 0;
-          for (let col = 0; col < size; col++) {
-            if (newGridData[row][col] !== 0) {
-              if (col !== prevIndex) {
-                newGridData[row][prevIndex] = newGridData[row][col];
-                newGridData[row][col] = 0;
-              }
-              prevIndex++;
+            if (grid[row][col].value === value) {
+              grid[row][valueIndex].merge = true;
+              grid[row][valueIndex].value += value;
+              grid[row][col].value = 0;
+              value = -1;
+              scoreIncrement += grid[row][valueIndex].value;
+            } else if (grid[row][col].value !== 0) {
+              value = grid[row][col].value;
+              grid[row][col].value = 0;
+              valueIndex = ++notNullIndex;
+              grid[row][valueIndex].value = value;
             }
           }
         }
         break;
 
       case Direction.RIGHT:
-        // merge
         for (let row = 0; row < size; row++) {
-          let prevValue = -1;
-          let prevIndex = -1;
+          let value = -1;
+          let valueIndex = -1;
+          let notNullIndex = size;
           for (let col = size - 1; col >= 0; col--) {
-            if (newGridData[row][col] === prevValue) {
-              newGridData[row][prevIndex] += newGridData[row][col];
-              newGridData[row][col] = 0;
-              scoreIncrement += newGridData[row][prevIndex]
-              prevValue = -1;
-              prevIndex = -1;
-            } else if (newGridData[row][col] !== 0) {
-              prevValue = newGridData[row][col];
-              prevIndex = col;
-            }
-          }
-        }
-        // compress
-        for (let row = 0; row < size; row++) {
-          let prevIndex = size - 1;
-          for (let col = size - 1; col >= 0; col--) {
-            if (newGridData[row][col] !== 0) {
-              if (col !== prevIndex) {
-                newGridData[row][prevIndex] = newGridData[row][col];
-                newGridData[row][col] = 0;
-              }
-              prevIndex--;
+            if (grid[row][col].value === value) {
+              grid[row][valueIndex].merge = true;
+              grid[row][valueIndex].value += value;
+              grid[row][col].value = 0;
+              value = -1;
+              scoreIncrement += grid[row][valueIndex].value;
+            } else if (grid[row][col].value !== 0) {
+              value = grid[row][col].value;
+              grid[row][col].value = 0;
+              valueIndex = --notNullIndex;
+              grid[row][valueIndex].value = value;
             }
           }
         }
         break;
     }
 
-    gridData.value = newGridData;
+    gridData.value = grid;
     score.value += scoreIncrement;
 
-    // add new cell
     if (hasEmpty.value) {
       addRandomCell();
     }
@@ -220,7 +191,7 @@ export const useGrid = (size: number) => {
 
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
-        if (gridData.value[row][col] === 0) {
+        if (gridData.value[row][col].value === 0) {
           positions.push([row, col]);
         }
       }
@@ -228,7 +199,10 @@ export const useGrid = (size: number) => {
 
     const randomIndex = Math.floor(Math.random() * positions.length);
     const [row, col] = positions[randomIndex];
-    gridData.value[row][col] = INIT_VALUE;
+
+    // 2-90% 4-10%
+    gridData.value[row][col].value = Math.random() < 0.9 ? 2 : 4;
+    gridData.value[row][col].new = true;
   };
 
   const init = (newSize?: number) => {
@@ -244,7 +218,7 @@ export const useGrid = (size: number) => {
   const start = () => {
     addRandomCell();
     addRandomCell();
-  }
+  };
 
   return {
     gridData,
@@ -253,6 +227,6 @@ export const useGrid = (size: number) => {
     move,
     undo,
     init,
-    start
+    start,
   };
 };

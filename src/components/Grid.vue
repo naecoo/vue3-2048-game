@@ -1,12 +1,20 @@
 <script lang="ts" setup>
-import { onUnmounted } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
 import { useGrid, Direction } from '@src/game';
 
+const scoreDiff = ref(0);
 const { gridData, score, isEnd, move, undo, init, start } = useGrid(4);
-start();
+
+watch(score, (newVal, oldVal) => {
+  scoreDiff.value = newVal - oldVal;
+  // todo: show score change
+});
 
 const onMove = (event: KeyboardEvent) => {
-  if (isEnd.value) return;
+  const modifier =
+    event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;
+
+  if (isEnd.value || modifier) return;
 
   switch (event.code) {
     case 'ArrowUp':
@@ -27,27 +35,35 @@ const onMove = (event: KeyboardEvent) => {
   }
 };
 
-window.addEventListener('keydown', onMove, false);
+document.addEventListener('keydown', onMove, false);
 onUnmounted(() => {
-  window.removeEventListener('keydown', onMove, false);
+  document.removeEventListener('keydown', onMove, false);
 });
+
+// todo: touch event
+
+start();
 </script>
 
-
 <template>
-  <p>
-    score: {{ score }}
-  </p>
-  <p>
-    isEnd: {{ isEnd }}
-  </p>
+  <p>score: {{ score }}</p>
+  <p>isEnd: {{ isEnd }}</p>
   <p>
     <button @click="undo">undo</button>
   </p>
   <main class="game-grid">
     <div class="row" v-for="(row, rowIndex) in gridData" :key="rowIndex">
-      <div class="cell" v-for="(col, colIndex) in row" :key="colIndex" :class="{ [`cell-${col}`]: true }">
-        {{ col || void 0 }}
+      <div
+        class="cell"
+        v-for="(cell, cellIndex) in row"
+        :key="cellIndex"
+        :class="{
+          [`cell-${cell.value}`]: true,
+          'cell-merge': cell.merge,
+          'cell-new': cell.new,
+        }"
+      >
+        {{ cell.value || void 0 }}
       </div>
     </div>
   </main>
@@ -78,6 +94,44 @@ onUnmounted(() => {
       font-size: 33px;
       font-weight: bold;
       border-radius: 6px;
+
+      @media (prefers-reduced-motion: no-preference) {
+        &.cell-new {
+          animation: appear 300ms ease 100ms;
+          animation-fill-mode: backwards;
+        }
+
+        &.cell-merge {
+          animation: pop 200ms ease-in 100ms;
+          animation-fill-mode: backwards;
+        }
+      }
+
+      @keyframes appear {
+        0% {
+          opacity: 0;
+          transform: scale(0);
+        }
+
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(0);
+        }
+
+        50% {
+          transform: scale(1.2);
+        }
+
+        100% {
+          transform: scale(1);
+        }
+      }
     }
   }
 }
@@ -95,9 +149,6 @@ each(range(1, 15), {
     height: (@value * 1px);
   }
 });
-
-
-
 
 .cell {
   background: #c8bbaf;
