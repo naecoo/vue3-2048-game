@@ -178,17 +178,32 @@ start();
 </style>
 
 <style lang="less">
+
 // todo: 生成2-32768的样式
-@base-color: #c8bbaf;
-@base-bg-color: #eee4da;
+@tile-color: #eee4da;
+@tile-gold-color: #edc22e;
+@tile-gold-glow-color: lighten($tile-gold-color, 15%);
+@bright-text-color: #f9f6f2;
+@base: 2;
+@exponent: 1;
+@limit: 15;
 
-each(range(1, 15), {
-  @size: pow(2, @index);
+each(range(@exponent, @limit), {
+  @power: pow(@base, @index);
 
-  .col-@{size} {
-    height: (@value * 1px);
+  .col-@{power} {
+
+    @gold-percent: (@index - 1) / (@limit - 1) * 100;
+    @mixed-background: mix(@tile-gold-color, @tile-color, @gold-percent);
+
+    // & when(@n >= 128) {
+    //   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0),
+    //   inset 0 0 0 1px hsla(0, 0%, 100%, 0);
+    // }
   }
-});
+})
+
+
 
 .cell {
   background: #c8bbaf;

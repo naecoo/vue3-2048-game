@@ -2,7 +2,6 @@
 import Grid from '@src/components/Grid.vue';
 </script>
 
-
 <template>
   <h1> The 2048 Game </h1>
   <grid />
