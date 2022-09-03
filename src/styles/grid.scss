@@ -61,7 +61,10 @@ $special-colors: false false,
 
 @mixin buildCellStyle {
   & {
-    transition: 100ms ease-in-out;
+    will-change: left;
+    will-change: top;
+    transition: left 100ms ease-in-out 0s;
+    transition: top 100ms ease-in-out 0s;
     animation-fill-mode: backwards;
   }
 
