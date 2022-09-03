@@ -1,9 +1,23 @@
 <script lang="ts" setup>
-import { ref, watch, onUnmounted, onMounted } from 'vue';
-import { useGrid, Direction } from '@src/game';
+import { ref, watch, onUnmounted, onMounted, watchEffect } from 'vue';
+import { useGrid, Direction, CellState, CellWithPosition } from '@src/game';
 
-const { gridData, score, isEnd, move, undo, init, start } = useGrid(4);
 
+// init
+const size = ref(4);
+const { cells, score, isEnd, move, undo, init, start } = useGrid(size.value);
+
+// todo: auto resize
+const gap = 10;
+const cellSise = 92.5;
+const getCellStyle = (cell: CellWithPosition) => {
+  const { x, y } = cell;
+
+  const ty = (cellSise * y) + (gap * (y + 1));
+  const tx = (cellSise * x) + (gap * (x + 1));
+
+  return `top: ${ty}px; left: ${tx}px;`;
+};
 
 const scoreDiff = ref(0);
 watch(score, (newVal, oldVal) => {
@@ -95,20 +109,20 @@ start();
     <button @click="undo">undo</button>
   </p>
   <main class="grid-container" ref="gridRef">
-    <div class="row" v-for="(row, rowIndex) in gridData" :key="rowIndex">
-      <div class="cell" v-for="(cell, cellIndex) in row" :key="cellIndex" :class="{
-        [`cell-${cell.value}`]: true,
-        'cell-merge': cell.merge,
-        'cell-new': cell.new,
-      }">
-        {{ cell.value || void 0 }}
-      </div>
+    <div class="row" v-for="row in size" :key="row">
+      <div class="cell-placeholder" v-for="col in size" :key="col" />
     </div>
+
+    <div class="cell" v-for="cell in cells" :key="cell.id" :class="{
+      [`cell-${cell.value}`]: true,
+      'cell-merge': cell.state === CellState.MERGE,
+      'cell-new': cell.state === CellState.NEW
+    }" :style="getCellStyle(cell)">{{ cell.value }}</div>
   </main>
 </template>
 
 <style lang="scss">
-@import '../styles/style.scss';
+@import '../styles/grid.scss';
 
 .grid-container {
   display: flex;
@@ -121,6 +135,7 @@ start();
   border-radius: 6px;
   resize: none;
   user-select: none;
+  position: relative;
 
   .row {
     flex: 1;
@@ -128,20 +143,26 @@ start();
     flex-direction: row;
     gap: 10px;
 
-    .cell {
+    .cell-placeholder {
       flex: 1;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 33px;
-      font-weight: bold;
       border-radius: 6px;
       background-color: #c8bbaf;
-      color: #5e554c;
-      // transition: 100ms ease-in-out;
-      // animation-fill-mode: backwards;
-      @include buildCellStyle();
     }
+  }
+
+  .cell {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 92.5px;
+    height: 92.5px;
+    font-size: 33px;
+    font-weight: bold;
+    border-radius: 6px;
+
+    @include buildCellStyle();
   }
 }
 </style>

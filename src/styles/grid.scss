@@ -60,7 +60,11 @@ $special-colors: false false,
   false true;
 
 @mixin buildCellStyle {
-  // Build cell colors
+  & {
+    transition: 100ms ease-in-out;
+    animation-fill-mode: backwards;
+  }
+
   @while $exponent <= $limit {
     $power: pow($base, $exponent);
 
@@ -129,7 +133,7 @@ $special-colors: false false,
     }
 
     &.cell-new {
-      animation: appear 300ms ease 100ms;
+      animation: appear 300ms ease-in 100ms;
       animation-fill-mode: backwards;
     }
 
