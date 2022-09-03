@@ -166,7 +166,7 @@ start();
 
       <div class="controls">
         <div class="select-wrapper">
-          <label class="label" for="select">SIZE:</label>
+          <label class="label" for="select">{{ $t('message.size') }}</label>
           <select class="select" id="select" v-model.number="size" @change="handleSizeChange">
             <template v-for="i in 9" :key="i">
               <option class="option" v-if="i > 1" :value="i">{{ i }}</option>
@@ -174,8 +174,8 @@ start();
           </select>
         </div>
         <div class="btns">
-          <button class="btn" @click="handleNewGame">New Game</button>
-          <button class="btn" @click="undo">Undo</button>
+          <button class="btn" @click="handleNewGame">{{ $t('message.new_game') }}</button>
+          <button class="btn" @click="undo">{{ $t('message.undo') }}</button>
         </div>
       </div>
     </header>
@@ -194,7 +194,7 @@ start();
       <!-- dialog wrapper -->
       <transition name="fade">
         <div v-show="isEnd" class="dialog">
-          <p class="text">Game Over!</p>
+          <p class="text">{{ $t('message.game_over') }}</p>
         </div>
       </transition>
     </main>

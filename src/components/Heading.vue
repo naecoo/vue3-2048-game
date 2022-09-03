@@ -10,11 +10,11 @@ const props = defineProps<{
     <h1 class="title">2048</h1>
     <div class="scores">
       <div class="score">
-        <p class="label">SCORE</p>
+        <p class="label">{{ $t('message.score') }}</p>
         <p class="value">{{ props.score }}</p>
       </div>
       <div class="score">
-        <p class="label">BEST</p>
+        <p class="label">{{ $t('message.best_score') }}</p>
         <p class="value">{{ props.bestScore }}</p>
       </div>
     </div>
