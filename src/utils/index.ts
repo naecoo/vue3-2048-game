@@ -1,7 +1,6 @@
 import { nextTick } from 'vue';
 
 const getKey = (key: string) => `2048_GAME_${key}`;
-
 export const useLocalStorage = () => {
   const getItem = (key: string): any => {
     const rawValue = window.localStorage.getItem(getKey(key));

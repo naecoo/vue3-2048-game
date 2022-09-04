@@ -232,6 +232,10 @@ start();
         margin-inline-start: 8px;
         border-radius: 4px;
         cursor: pointer;
+        color: var(--select-color);
+        background-color: var(--select-bg-color);
+
+        .options {}
       }
     }
 
@@ -243,8 +247,8 @@ start();
         text-align: center;
         text-decoration: none;
         border-radius: 4px;
-        color: rgb(249, 246, 242);
-        background: rgb(143, 122, 102);
+        color: var(--btn-color);
+        background: var(--btn-bg-color);
         border: none;
         outline: none;
         cursor: pointer;
@@ -301,6 +305,7 @@ start();
     font-weight: bold;
     border-radius: 6px;
     @include buildCellStyle();
+    color: var(--cell-color);
   }
 
   .dialog {
@@ -313,7 +318,7 @@ start();
     bottom: 0;
     right: 0;
     z-index: 100;
-    background: rgba(238, 228, 218, 0.73);
+    background: var(--dialog-bg-color);
 
     .text {
       font-size: 3em;

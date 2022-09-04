@@ -12,7 +12,8 @@ const messages = {
       size: '尺寸：',
       new_game: '新游戏',
       undo: '撤回',
-      game_over: '游戏结束！'
+      game_over: '游戏结束！',
+      switch_theme: '切换主题'
     }
   },
   [LOCALE.EN]: {
@@ -22,7 +23,8 @@ const messages = {
       size: 'SIZE:',
       new_game: 'NEW GAME',
       undo: 'UNDO',
-      game_over: 'GAME OVER!'
+      game_over: 'GAME OVER!',
+      switch_theme: 'switch theme'
     }
   }
 };

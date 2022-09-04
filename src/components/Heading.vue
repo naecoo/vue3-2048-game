@@ -66,7 +66,7 @@ watchEffect(() => {
       font-weight: bold;
       text-align: center;
       border-radius: 4px;
-      background: rgb(187, 173, 160);
+      background: var(--score-bg-color);
 
       @include smaller(720px) {
         padding: 2px 4px;
@@ -79,14 +79,13 @@ watchEffect(() => {
       .label {
         margin: 0;
         font-size: 12px;
-        color: rgb(238, 228, 218)
+        color: var(--score-label-color);
       }
 
       .value {
         margin: 0;
         font-size: 18px;
-
-        color: #fff;
+        color: var(--score-value-color);
       }
     }
 

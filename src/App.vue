@@ -1,19 +1,28 @@
 <script lang="ts" setup>
+import Switcher from '@src/components/Switcher.vue';
 import Grid from '@src/components/Grid.vue';
 </script>
 
 <template>
-  <grid />
+  <switcher />
+  <div class="game">
+    <grid />
+  </div>
 </template>
 
-<style>
+<style lang="scss">
 #app {
   display: flex;
   flex-flow: column;
   align-items: center;
-  justify-content: center;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+
+  .game {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
