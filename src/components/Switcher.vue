@@ -27,12 +27,6 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 } else {
   switchTheme(THEME.LIGHT);
 }
-
-// todo: audio
-// const audio = ref(true);
-// const switchAudio = (value: boolean) => {
-//   audio.value = value;
-// };
 </script>
 
 <template>
@@ -61,7 +55,7 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
     </div>
 
     <div class="locale" @click="toggleLocale">
-      {{ locale === LOCALE.CN ? 'English' : '中 文' }}
+      <span>{{ locale === LOCALE.CN ? 'English' : '中文' }}</span>
     </div>
   </div>
 </template>
@@ -71,7 +65,8 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 66px;
+  margin-block-start: 10px;
+  margin-inline-end: 10%;
   width: 100%;
 
   .theme {
