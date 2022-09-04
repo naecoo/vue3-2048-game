@@ -14,9 +14,11 @@ const { setItem, getItem } = useLocalStorage();
 const storageKey = computed(() => `size${size.value}_best`);
 const bestScore = ref(getItem(storageKey.value) ?? 0);
 
-const scoreDiff = ref(0);
+const scoreDiff = ref({ value: 0 });
 watch(score, (newVal, oldVal) => {
-  scoreDiff.value = newVal - oldVal;
+  scoreDiff.value = {
+    value: newVal - oldVal
+  };
 
   // update best score
   if (newVal > bestScore.value) {

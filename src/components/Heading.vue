@@ -3,17 +3,17 @@ import { watchEffect, ref } from 'vue';
 
 const props = defineProps<{
   score: number;
-  scoreIncrement: number;
+  scoreIncrement: { value: number; };
   bestScore: number;
 }>();
 
 const increment = ref(0);
 let timer: ReturnType<typeof setTimeout>
 watchEffect(() => {
-  const diff = props.scoreIncrement;
+  const diff = props.scoreIncrement.value;
   if (diff <= 0) return;
 
-  increment.value = props.scoreIncrement;
+  increment.value = props.scoreIncrement.value;
   clearTimeout(timer);
   timer = setTimeout(() => {
     increment.value = 0;
