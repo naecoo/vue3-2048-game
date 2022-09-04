@@ -1,9 +1,6 @@
-# 2048 game implemention by Vue 3.x.
+# 2048
 
-The inspiration comes from
-- [2048-React-Hooks](https://github.com/sefaokumus/2048-React-Hooks)
-- [gan-cube-legends](https://all2048.com/gan-cube-legends)
-- [classical-2048-game](https://github.com/gabrielecirulli/2048)
+This is a Vue3 version of the game inspired by [2048](https://github.com/gabrielecirulli/2048).
 
 
-doing....
+Play it [here](https://naecoo.github.io/vue3-2048-game/)
