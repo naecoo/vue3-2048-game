@@ -1,3 +1,9 @@
+@mixin smaller($width) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
+
 @function exponent($base, $exponent) {
   // reset value
   $value: $base;

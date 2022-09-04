@@ -17,7 +17,6 @@ const bestScore = ref(getItem(storageKey.value) ?? 0);
 const scoreDiff = ref(0);
 watch(score, (newVal, oldVal) => {
   scoreDiff.value = newVal - oldVal;
-  // todo: show score change
 
   // update best score
   if (newVal > bestScore.value) {
@@ -41,13 +40,19 @@ const gridStyle = computed(() => {
   `;
 });
 const getCellStyle = (cell: CellWithPosition) => {
-  const { x, y } = cell;
   const width = cellSize.value;
 
+  const { x, y } = cell;
   const ty = (width * y) + (gap * (y + 1));
   const tx = (width * x) + (gap * (x + 1));
 
-  return `width: ${width}px; height: ${width}px; top: ${ty}px; left: ${tx}px;`;
+  return `
+    width: ${width}px;
+    height: ${width}px;
+    top: ${ty}px;
+    left: ${tx}px;
+    font-size: ${Math.round(width / 2.5)}px;
+  `;
 };
 
 // watch size change
@@ -133,7 +138,6 @@ onMounted(() => {
     });
     observer.observe(el);
   }
-
 });
 
 onUnmounted(() => {
@@ -162,7 +166,7 @@ start();
 <template>
   <div class="grid">
     <header class="grid-header">
-      <Heading :score="score" :best-score="bestScore" />
+      <Heading :score="score" :score-increment="scoreDiff" :best-score="bestScore" />
 
       <div class="controls">
         <div class="select-wrapper">
@@ -204,16 +208,12 @@ start();
 <style lang="scss">
 @import '../styles/grid.scss';
 
-.grid {
-  margin-top: 40px;
-}
-
 .grid-header {
   .controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 24px;
+    margin-block-start: 2em;
 
     .select-wrapper {
       display: flex;
@@ -225,8 +225,11 @@ start();
 
       .select {
         display: inline-block;
-        width: 40px;
+        width: 60px;
+        padding: 4px;
         margin-inline-start: 8px;
+        border-radius: 4px;
+        cursor: pointer;
       }
     }
 
@@ -244,6 +247,11 @@ start();
         outline: none;
         cursor: pointer;
 
+        @include smaller(480px) {
+          padding: 4px 12px;
+          font-size: 14px;
+        }
+
         &:last-child {
           margin-inline-start: 10px;
         }
@@ -253,15 +261,30 @@ start();
 }
 
 .grid-main {
-  width: 400px;
-  height: 400px;
-  margin-top: 12px;
-
+  width: 500px;
+  height: 500px;
+  margin-block-start: 12px;
   background-color: #bbada0;
   border-radius: 6px;
   resize: none;
   user-select: none;
   position: relative;
+
+  // media query
+  @include smaller(960px) {
+    width: 400px;
+    height: 400px;
+  }
+
+  @include smaller(720px) {
+    width: 350px;
+    height: 350px;
+  }
+
+  @include smaller(480px) {
+    width: 300px;
+    height: 300px;
+  }
 
   .cell-placeholder {
     border-radius: 6px;
@@ -273,11 +296,8 @@ start();
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 33px;
     font-weight: bold;
     border-radius: 6px;
-    // todo: cell font-size media query
-
     @include buildCellStyle();
   }
 
