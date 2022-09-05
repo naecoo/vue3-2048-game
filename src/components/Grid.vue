@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, onUnmounted, onMounted, computed } from 'vue';
 import { useGrid, Direction, CellState, CellWithPosition } from '@src/game';
-import { useLocalStorage } from '@src/utils';
+import { useLocalStorage, uuid } from '@src/utils';
 import Heading from '@src/components/Heading.vue';
 
 
@@ -14,11 +14,11 @@ const { setItem, getItem } = useLocalStorage();
 const storageKey = computed(() => `size${size.value}_best`);
 const bestScore = ref(getItem(storageKey.value) ?? 0);
 
-const scoreDiff = ref({ value: 0 });
+const scoreDiff = ref({ id: uuid(), value: 0 });
 watch(score, (newVal, oldVal) => {
-  scoreDiff.value = {
-    value: newVal - oldVal
-  };
+  // score diff
+  scoreDiff.value.id = uuid();
+  scoreDiff.value.value = newVal - oldVal;
 
   // update best score
   if (newVal > bestScore.value) {

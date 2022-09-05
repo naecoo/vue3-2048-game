@@ -32,20 +32,18 @@ type GridHistoryItem = {
   data: GridData;
 };
 
-const createCell = (value: number = 0, state: CellState = CellState.NORMAL): Cell => {
-  return {
-    id: uuid(),
-    value,
-    state
-  };
-}
+const createCell = (value: number, state: CellState): Cell => ({
+  id: uuid(),
+  value,
+  state
+});
 
 const createGridData = (size: number): GridData => {
   const res: GridData = [];
   for (let i = 0; i < size; i++) {
     const rows: Cell[] = [];
     for (let i = 0; i < size; i++) {
-      rows.push(createCell());
+      rows.push(createCell(0, CellState.NORMAL));
     }
     res.push(rows);
   }
@@ -251,9 +249,11 @@ export const useGrid = (size: number) => {
     const randomIndex = Math.floor(Math.random() * positions.length);
     const [row, col] = positions[randomIndex];
 
-    // 2-90% 4-10%
-    gridData.value[row][col].value = Math.random() < 0.9 ? 2 : 4;
-    gridData.value[row][col].state = CellState.NEW;
+    gridData.value[row][col] = createCell(
+      // 2-90% 4-10%
+      Math.random() < 0.9 ? 2 : 4,
+      CellState.NEW
+    );
   };
 
   const init = (newSize?: number) => {

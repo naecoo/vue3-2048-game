@@ -1,25 +1,9 @@
 <script lang="ts" setup>
-import { watchEffect, ref } from 'vue';
-
 const props = defineProps<{
   score: number;
-  scoreIncrement: { value: number; };
   bestScore: number;
+  scoreIncrement: { id: number; value: number; };
 }>();
-
-const increment = ref(0);
-let timer: ReturnType<typeof setTimeout>
-watchEffect(() => {
-  const diff = props.scoreIncrement.value;
-  if (diff <= 0) return;
-
-  increment.value = props.scoreIncrement.value;
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    increment.value = 0;
-  }, 500);
-});
-
 </script>
 
 <template>
@@ -29,7 +13,11 @@ watchEffect(() => {
       <div class="score score-now">
         <p class="label">{{ $t('message.score') }}</p>
         <p class="value">{{ props.score }}</p>
-        <span v-if="increment > 0" class="score-increment">+{{ increment }}</span>
+
+        <!-- score increment -->
+        <span class="score-increment" v-show="props.scoreIncrement.value > 0" :key="props.scoreIncrement.id">
+          +{{ props.scoreIncrement.value }}
+        </span>
       </div>
       <div class="score">
         <p class="label">{{ $t('message.best_score') }}</p>
