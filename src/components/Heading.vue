@@ -87,24 +87,29 @@ const props = defineProps<{
         z-index: 100;
         font-size: 2em;
         font-weight: bold;
-        animation: popup 500ms linear;
-        animation-fill-mode: forwards;
       }
 
-      @keyframes popup {
-        0% {
-          opacity: 0.5;
-          transform: translateY(30px);
+      @media (prefers-reduced-motion: no-preference) {
+        .score-increment {
+          animation: popup 500ms linear;
+          animation-fill-mode: forwards;
         }
 
-        50% {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        @keyframes popup {
+          0% {
+            opacity: 0.5;
+            transform: translateY(30px);
+          }
 
-        100% {
-          opacity: 0;
-          transform: translateY(-30px);
+          50% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+
+          100% {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
         }
       }
     }
