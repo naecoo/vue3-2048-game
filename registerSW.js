@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/vue3-2048-game/sw.js', { scope: '/vue3-2048-game/' })})}
