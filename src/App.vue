@@ -17,7 +17,8 @@ import Grid from '@src/components/Grid.vue';
   align-items: center;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   .game {
     flex: 1;

@@ -139,6 +139,8 @@ onMounted(() => {
       gridSize.value = el.clientWidth;
     });
     observer.observe(el);
+
+    gridRef.value?.scrollIntoView({ behavior: 'smooth' });
   }
 });
 
@@ -234,8 +236,6 @@ start();
         cursor: pointer;
         color: var(--select-color);
         background-color: var(--select-bg-color);
-
-        .options {}
       }
     }
 
@@ -269,7 +269,7 @@ start();
 .grid-main {
   width: 500px;
   height: 500px;
-  margin-block-start: 12px;
+  margin-block: 12px;
   background-color: #bbada0;
   border-radius: 6px;
   resize: none;

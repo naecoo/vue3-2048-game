@@ -1,5 +1,5 @@
-@mixin smaller($width) {
-  @media screen and (max-width: $width) {
+@mixin smaller($value) {
+  @media screen and (max-width: $value) {
     @content;
   }
 }
